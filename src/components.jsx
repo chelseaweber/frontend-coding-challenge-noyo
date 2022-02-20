@@ -64,23 +64,13 @@ Event = connect((state, ownProps) => {
 })(Event)
 
 
-const handleCompareClick = (dispatch) => (e) => {
-  /*
-   * Your code here (and probably elsewhere)
-   *
-   *
-   * We've provided a thunk function to fetch
-   * event data.
-   * Find it in thunks.js, lines 81-107,
-   * and referenced in the comment below on line 78.
-   */
-
-  // dispatch(fetchSelectedEventDetails())
+const handleCompareClick = (dispatch, selectedEvents) => (e) => {
+  dispatch(fetchSelectedEventDetails(selectedEvents))
 }
 
-let EventList = ({dispatch, canCompare, events}) => {
+let EventList = ({dispatch, canCompare, events, selectedEvents}) => {
   return <>
-    <button onClick={handleCompareClick(dispatch)} disabled={!canCompare}>Compare</button>
+    <button onClick={handleCompareClick(dispatch, selectedEvents)} disabled={!canCompare}>Compare</button>
     <ul>
       {events.map((event) => {
         return <Event event={event} key={eventGuid(event)} guid={eventGuid(event)} />
@@ -116,9 +106,19 @@ Address = connect((state, ownProps) => {
 })(Address)
 
 
+// --> comparison Modal
+let Comparison = ({ dispatch, eventJson}) => {
+  return <li>
+    <pre>{JSON.stringify(eventJson, undefined, 2)}</pre>
+  </li>
+}
+Comparison = connect(state => state)(Comparison)
+
+
 
 //--> App wrapper
-let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, comparingEvents, error} ) => {
+let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error} ) => {
+  console.log(comparisonJson)
   return <>
     {error ? <p className="error">{error}</p> : ''}
     {userIds && userIds.length ?
@@ -138,9 +138,12 @@ let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, comp
     <div className="events">
       <h2>Events</h2>
       { events && events.length
-        ? <EventList events={events} />
+        ? <EventList events={events} selectedEvents={selectedEvents} />
         : <p>{selectedAddressId ? 'No events found.' : 'Select an address to see events'}</p>
       }
+    </div>
+    <div className="comparison">
+      <ul><Comparison eventJson={comparisonJson} /></ul>
     </div>
   </>
 }

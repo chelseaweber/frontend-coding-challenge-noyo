@@ -41,3 +41,8 @@ form, .addresses {
 .addresses .selected > pre {
   outline: 1px dashed #333;
 }
+
+.comparison {
+  background-color: white;
+  float: left;
+}

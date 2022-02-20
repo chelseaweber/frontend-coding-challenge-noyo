@@ -114,6 +114,7 @@ const reducer = (state, action) => {
 //--> Setup
 const initialState = {
   addresses: [],
+  comparisonJson: {},
   events: [],
   userIds: [],
   selectedUserId: null,
