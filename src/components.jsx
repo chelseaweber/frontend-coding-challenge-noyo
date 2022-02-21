@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import ReactDiffViewer, { DiffMethod } from "react-diff-viewer";
 
 import { fetchAddresses, fetchEvents, fetchSelectedEventDetails } from './thunks'
 import { eventGuid, canSelectEvents, undeletedAddresses } from './selectors'
@@ -108,20 +109,20 @@ Address = connect((state, ownProps) => {
 
 // --> comparison Modal
 let Comparison = ({ dispatch, eventJson, isOpen }) => {
-  return <div class="comparison-container">
-    <div class="comparison">
+  return <div className="comparison-container">
+    <div className="comparison">
       <header>
         <h4>Event Comparison</h4>
         <button onClick={closeComparison(dispatch, isOpen)} >Close</button>
       </header>
-      <ul class="detail-list">
-        <li>
-          <pre>{JSON.stringify(eventJson[0], undefined, 2)}</pre>
-        </li>
-        <li>
-          <pre>{JSON.stringify(eventJson[1], undefined, 2)}</pre>
-        </li>
-      </ul>
+      <ReactDiffViewer
+        oldValue={JSON.stringify(eventJson[0], undefined, 2)}
+        newValue={JSON.stringify(eventJson[1], undefined, 2)}
+        splitView={true}
+        compareMethod={DiffMethod.WORDS}
+        leftTitle="Event A"
+        rightTitle="Event B"
+      />
     </div>
   </div>
 }
@@ -138,7 +139,6 @@ const closeComparison = (dispatch) => (e) => {
 
 //--> App wrapper
 let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error, isOpen} ) => {
-  console.log(comparisonJson)
   return <>
     {error ? <p className="error">{error}</p> : ''}
     {userIds && userIds.length ?
