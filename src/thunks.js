@@ -2,12 +2,18 @@ import { actions } from './redux-store';
 
 const API_BASE = 'http://localhost:27606'
 
-const fetchUserIds = () => (dispatch) => {
+const fetchUserIds = (retries = 4) => (dispatch) => {
   return fetch(`${API_BASE}/user_ids`).then((response) => {
     if (!response.ok) {
-      return dispatch({
-        type: actions.FETCH_USERS_ERROR,
-      })
+      if (retries > 0 && response.status >= 500 && response.status < 600) {
+        setTimeout(() => {
+          dispatch(fetchUserIds(retries - 1))
+        }, 10000)
+      } else {
+        return dispatch({
+          type: actions.FETCH_USERS_ERROR
+        })
+      }
     }
 
     return response.json()
@@ -19,9 +25,15 @@ const fetchUserIds = () => (dispatch) => {
       payload: data
     })
   }, err => {
-    return dispatch({
-      type: actions.FETCH_USERS_ERROR
-    })
+    if (retries > 0) {
+      setTimeout(() => {
+        dispatch(fetchUserIds(retries - 1))
+      }, 10000)
+    } else {
+      return dispatch({
+        type: actions.FETCH_USERS_ERROR
+      })
+    }
   })
 }
 
