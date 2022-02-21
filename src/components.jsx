@@ -138,10 +138,11 @@ const closeComparison = (dispatch) => (e) => {
 
 
 //--> App wrapper
-let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error, isOpen} ) => {
+let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error, isOpen, usersLoading} ) => {
   return <>
+    {usersLoading ? <p className="usersLoading">Loading...</p> : ''}
     {error ? <p className="error">{error}</p> : ''}
-    {userIds && userIds.length ?
+    {userIds && userIds.length && !usersLoading ?
       <UserSelectForm userIds={userIds} selectedUserId={selectedUserId} />
     : ''}
     <div className="addresses">

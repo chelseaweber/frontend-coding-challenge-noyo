@@ -19,6 +19,11 @@ p.error {
   color: #f00;
   padding: 0.25rem;
 }
+p.usersLoading {
+  clear: both;
+  color: #1b75be;
+  padding: 0.25rem;
+}
 ul {
   padding: 0;
 }

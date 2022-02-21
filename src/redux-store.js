@@ -26,12 +26,14 @@ const reducer = (state, action) => {
     case actions.FETCH_USERS_SUCCESS:
       return {
         ...state,
-        userIds : action.payload
+        userIds : action.payload,
+        usersLoading: false
       }
     case actions.FETCH_USERS_ERROR:
       return {
         ...state,
-        error : "Something went wrong while fetching users."
+        error : "Something went wrong while fetching users.",
+        usersLoading: false
       }
     case actions.CHANGE_SELECTED_USER_ID:
       return {
@@ -128,7 +130,8 @@ const initialState = {
   selectedUserId: null,
   selectedAddressId: null,
   selectedEvents: {},
-  error: null
+  error: null,
+  usersLoading: true
 }
 
 const store = createStore(reducer, initialState, applyMiddleware(thunk))
