@@ -125,7 +125,7 @@ const initialState = {
   addresses: [],
   comparisonJson: {},
   events: [],
-  isOpne: false,
+  isOpen: false,
   userIds: [],
   selectedUserId: null,
   selectedAddressId: null,

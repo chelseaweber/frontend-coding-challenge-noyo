@@ -60,6 +60,12 @@ So why isn't this displaying when you load the app? Your first task is to diagno
 
 *Estimated time to complete: 15 minutes to 1 hour*
 
+### My Approach
+
+When debugging, I first checked the network tab to see what the requests were. I found that my request was returning a 403, indicating that the server understands the request but refuses to authorize it. From there, I checked the documentation provided for [API](https://github.com/noyo-technologies/address-history-challenge) to check if credentials were needed. In the documentation, I saw that the server was available at http://localhost:27606. After cross-checking that with the base API, I updated it to be the correct base and the request returned a 200.
+
+The request returned a 200, but it did was returning an empty array. After confirming that I did not need to seed the database, I took a look at the `fetchUserIds` Thunk, comparing it line by line with the `fetchAddresses` Thunk, and found that the Response.json() method was not being called. Calling the method fixed the bug and `fetchUserIds` was returning the expected array.
+
 
 
 ### 2. Add a feature that makes it possible to compare two events associated with a given address.
@@ -81,6 +87,15 @@ To get started, take a look at lines 67-79 of `src/components.jsx`.
 
 *Estimated time to complete: 1-3 hours*
 
+### My Approach
+
+I started with making sure I could get the data displayed on the existing page as simple objects before adding the modal or comparison logic. I did this by passing the `selectedEvents` to `fetchSelectedEventDetails`, through `handleCompareClick` and `EventList`. I then created a simple React component that displayed the event details. 
+
+Next, I added the modal functionality. I added `isOpen` to the state, setting `EVENT_DETAILS_SUCCESS` to open the modal and creating a new reducer `CLOSE_COMPARISON` to close the modal. At this stage, I left the event details in their original objects to ensure I had enough time.
+
+Lastly, I added [react-diff-viewer](https://www.npmjs.com/package/react-diff-viewer) to add the side-by-side git diff-like functionality. I decided to go with this package since it was had the exact functionality I was looking for and was very easy to implement.
+
+If I continued to work on this project, I would research other options, since react-diff-viewer was last published 2 years ago. I planned on adding the respective date and times for the event details headers, instead of `Event A` and `Event B`, since the current headers add little value to users deciphering which event is which. Unfortunately, I ran into errors with the Date formatting and decided it was best to move on.
 
 ### 3. Add retry logic for cases when the API connection is lost.
 
@@ -114,6 +129,9 @@ As such, we want this app to try to recover if it starts up and fails to connect
 
 *Estimated time to complete: 30 minutes to 1 hour*
 
+### My Approach 
+
+I decided to use a recursive approach when adding retry to `fetchUserIds`. Even though it is usually slower and uses more memory than iteration, I found the code easier to understand in recursion. I also added a loading state to the page so that users had a better understanding of the status of the app.
 
 ## Time management:
 We've provided time estimates for each of the tasks above, and we've attempted to test our assumptions. However, we recognize that everyone works differently. Coding may involve race conditions, but it's not a race. **We do NOT believe speed is the best measure of proficiency**.
