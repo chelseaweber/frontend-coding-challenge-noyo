@@ -93,6 +93,10 @@ const reducer = (state, action) => {
       return Object.assign({}, state, {
         error : action.payload
       })
+    case actions.CLOSE_COMPARISON:
+      return Object.assign({}, state, {
+        isOpen : false
+      })
     default:
       return state
   }

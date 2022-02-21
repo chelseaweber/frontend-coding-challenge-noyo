@@ -15,7 +15,8 @@ const actions = {
   FETCH_EVENTS_ERROR: 'fetch_events_error',
   TOGGLE_EVENT_SELECTION: 'toggle_event_selection',
   EVENT_DETAILS_SUCCESS: 'event_details_success',
-  EVENT_DETAILS_ERROR: 'event_details_error'
+  EVENT_DETAILS_ERROR: 'event_details_error',
+  CLOSE_COMPARISON: 'close_comparison'
 }
 
 
@@ -98,12 +99,18 @@ const reducer = (state, action) => {
     case actions.EVENT_DETAILS_SUCCESS:
       return {
         ...state,
-        comparisonJson : action.payload
+        comparisonJson : action.payload,
+        isOpen: true
       }
     case actions.EVENT_DETAILS_ERROR:
       return {
         ...state,
         error : action.payload
+      }
+    case actions.CLOSE_COMPARISON:
+      return {
+        ...state,
+        isOpen : false
       }
     default:
       return state
@@ -116,6 +123,7 @@ const initialState = {
   addresses: [],
   comparisonJson: {},
   events: [],
+  isOpne: false,
   userIds: [],
   selectedUserId: null,
   selectedAddressId: null,

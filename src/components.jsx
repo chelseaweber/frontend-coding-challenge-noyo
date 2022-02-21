@@ -107,17 +107,37 @@ Address = connect((state, ownProps) => {
 
 
 // --> comparison Modal
-let Comparison = ({ dispatch, eventJson}) => {
-  return <li>
-    <pre>{JSON.stringify(eventJson, undefined, 2)}</pre>
-  </li>
+let Comparison = ({ dispatch, eventJson, isOpen }) => {
+  return <div class="comparison-container">
+    <div class="comparison">
+      <header>
+        <h4>Event Comparison</h4>
+        <button onClick={closeComparison(dispatch, isOpen)} >Close</button>
+      </header>
+      <ul class="detail-list">
+        <li>
+          <pre>{JSON.stringify(eventJson[0], undefined, 2)}</pre>
+        </li>
+        <li>
+          <pre>{JSON.stringify(eventJson[1], undefined, 2)}</pre>
+        </li>
+      </ul>
+    </div>
+  </div>
 }
 Comparison = connect(state => state)(Comparison)
 
+const closeComparison = (dispatch) => (e) => {
+  e.preventDefault()
+
+  dispatch({
+    type: actions.CLOSE_COMPARISON
+  })
+}
 
 
 //--> App wrapper
-let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error} ) => {
+let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, selectedEvents,  comparisonJson, error, isOpen} ) => {
   console.log(comparisonJson)
   return <>
     {error ? <p className="error">{error}</p> : ''}
@@ -142,9 +162,7 @@ let App = ({ addresses, events, userIds, selectedUserId, selectedAddressId, sele
         : <p>{selectedAddressId ? 'No events found.' : 'Select an address to see events'}</p>
       }
     </div>
-    <div className="comparison">
-      <ul><Comparison eventJson={comparisonJson} /></ul>
-    </div>
+    {isOpen && <Comparison eventJson={comparisonJson} />}
   </>
 }
 App = connect(state => {

@@ -42,7 +42,43 @@ form, .addresses {
   outline: 1px dashed #333;
 }
 
+.comparison-container {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+  position: fixed;
+  background-color: rgba(0,0,0,.7);
+  padding-top: 2%;
+}
+
 .comparison {
-  background-color: white;
-  float: left;
+  width: 890px;
+  max-width: 90%;
+  position: relative;
+  overflow: scroll;
+  border-radius: 4px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.comparison header {
+  height: 60px;
+  color: #ffffff;
+  background-color: #333;
+  display: grid;
+  padding: 10px 20px;
+  align-items: center;
+  grid-template-columns: auto 80px;
+}
+
+.detail-list {
+  display: grid;
+  padding: 20px;
+  grid-gap: 20px;
+  align-items: center;
+  grid-template-columns: auto auto;
 }
